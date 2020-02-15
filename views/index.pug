@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  div#printer-list-app
+    h1.text-center Printer Management
+
+    input.search-bar#search-bar(type='text', placeholder='Ne ararsan bulur', v-model="search")
+    div.toolbar
+      div.tool-group
+        button(@click="defaulthighlight") Sık kullanılanlar
+      div.tool-group  
+        input#datepicker
+        select(v-model="selectedTimestamp", v-on:change="filterDeviceInfo")
+          option(value="null") Saat Seçin
+          option(
+            v-for="scanTime in scanList",
+            :value="scanTime.value"
+          ) {{scanTime.label}}
+
+    div.device-list
+      device(
+        v-for="info in filteredDevices",
+        :key="info._id",
+        :date="info.date",
+        :deviceinfo="info.deviceinfo",
+        :infoList="info.info",
+        :device="info.device"
+        :ipAddress="info.ipAddress",
+        :highlightlist="highlightList",
+        @selectlabel="applylabel"
+      )
+
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js")
+  script(src="https://npmcdn.com/flatpickr/dist/l10n/tr.js")
+  script(src="https://cdn.jsdelivr.net/npm/flatpickr")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js")
+  script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
+  script(src="/javascripts/components.js")
+  //- script(src="/javascripts/page.js")
